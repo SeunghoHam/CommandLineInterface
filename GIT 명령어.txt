@@ -1,0 +1,123 @@
+<용어>
+Git : 버전 관리 시스템 
+GitHub : Git으로 관리하는 프로젝트를 올려둘 수 있는 사이트
+GUI : 그래픽 유저 인터페이스, 마우스로 클릭하는 방식
+CLI : 커맨드 라인 인터페이스, 명령어 하나씩 입력
+Git Bash : CLI 방식으로 Git 사용 환경
+commit : 버전 관리를 통해 생성된 파일, 혹은 그 행위
+log 명령어 : 지금까지 만든 커밋을 모두 확인
+checkout : checkout으로 원하는 지점으로 파일을 되돌릴 수 있다
+로컬저장소 : Git으로 버전 관리하는 내 컴퓨터 안의 폴더
+레포지토리 : 원격저장소
+push : 로컬저장소의 commit(버전 관리한 파일)을 원격저장소에 올리는 것
+pull : 원격저장소의 commit을 로컬저장소에 내려받는 것
+upstream : 원본저장소를 지칭하는 관용적 닉네임
+cherrypick : 선별(저 커밋 하나만 떼서 지금 브랜치에 붙이고 싶어)
+reset : 옛날 커밋으로 브렌치를 되돌리기
+revert : 해당 커밋의 변경사항을 되돌리기
+stash : 변경사항을 잠시 다른곳에 저장, 커밋은 만들지 않는다.
+복사하기 Ctrl  + Insert
+붙여넣기 Shift + Insert
+
+md 확장자는 txt 확장자와 동일한 텍스트 문서를 적기 위한 파일
+git config --global user.name "이름" = 정보 등록
+git add 추가할파일.확장자 [ex)README.txt] = 커밋에 추가할 파일 선택
+git commit -m "커밋[.ex)사이트 설명 추가]" = 상세 설명을 적을 커밋 -m 은 메신저의 약자
+git log = 로그 띄우기
+	commit ~~~~ = ~에 해당하는게 커밋 버전
+git checkout 커밋 버전 = 해당 커밋의 버전으로 되돌린다.
+git checkout - = 가장 최신 커밋으로 돌아간다.
+
+(깃허브 사이트랑 연결)git remote add origin(origin이라는 이름으로) (github주소) = 로컬저장소에 원격저장소 주소를 알려준다
+git push origin master = 깃허브로 보내기
+
+
+
+
+git clone (github주소) = github원격저장소의 커밋을 로컬저장소에 내려받기
+git pull origin master = pull : 원격저장소에 새로운 커밋이 있다면 내 로컬저장소에 받아 오라는 명령어
+
+
+
+branch 생성할때 브렌치 이름에 '/' 를 넣으면 폴더처럼 구분되게 보인다. -소스트리의 편의 기능 
+
+=====CDI=====
+HEAD는 현재 작업중이 브렌치를 가리킨다.
+브렌치는 커밋을 가리키므로 HEAD도 커밋을 가리킨다.
+결국 HEAD는 현재 작업 중인 브렌치의 최근 커밋을 가리킨다.
+
+revert 를 이용해서 커밋을 되돌릴 수 있다. p249
+
+
+현재 브렌치를 n 단계 이전으로 되돌리기
+git reset --hard HEAD~n
+
+주석 있는 태그 만들기
+git tag -a -m "간단한 메세지" 태그이름
+태그 푸시 
+git push origin(원격 저장소 이름) 태그이름
+
+
+긴급 버그 처리 
+git checkout -b hotfix master  = master 로부터 hotfix 브랜치 생성, 체크아웃
+
+
+rebase(재배치)
+git checkout feature1 = 브렌치 전환
+git reset --hard HEAD~ =  현재 브렌치를 한 단계 되돌리기
+git rebase master =HEAD브렌치의 커밋들을 master로 재배치
+
+
+
+충돌 해결
+git status = 문제 발생 지점 찾기
+git rebase --continue = 리베이스 계속 진행
+ 
+
+merge = 마지막 단계에서 git commit
+rebase  git rebase --continue
+
+
+	3-way병합 ,		rebase
+특징 : 머지 커밋 생성		현재 커밋들을 수정하면서 대상 브랜치 위로 재배치
+장점 : 한 번만 충돌 생성		깔끔한 히스토리
+단점 : 트리가 약간 지저분해짐	여러 번 충돌이 발생할 수 있음
+
+
+rebase시 원격 저장소에 푸시한 브랜치는 rebase 하지 않는것이 원칙이다
+
+
+임시 브랜치 생성 p.275
+
+
+
+git status 로 clean 하다는 말 = 워킹트리, 스테이지 , HEAD 커밋의 내용이 같다. // 비어있다는 말이 아님!
+워킹트리 객체의 내용은? git ls-tree 커밋
+스테이지 객체의 내용은? gi ls-files --stage
+
+1. 커밋을 하면 스테이지 객체로 트리가 만들어진다
+2. 커밋에는 커밋 메세지와 트리 객체가 포함된다.
+
+체크아웃 = 해당 브렌치로 HEAD를 이동시키고 스테이지와 워킹트리를 HEAD가 가르키는 커밋과 동일한 내용으로 변경하는 것
+
+
+
+
+1. git add 명령을  수행하면 워킹트리의 내용을 스테이지에 추가한다
+2. git commit 명령을 수행하면 스테이지의 내용으로 새로운 커밋을 만든다
+3. 커밋 이후  git status 명령을 내리면 clean한 상태임을 표시해 주는데,  
+	이 상태는 워킹트리, 스테이지, HEAD 커밋들이 모두 동일한 내용을 담고 있다는 뜻이다.
+4. 커밋 객체는 트리 객체와 blob(binary large object) 객체들의 조합으로 이루어져 있다
+5. 커밋 객체는 부모 커밋에 대한 참조를 가지고 있다
+6. 브렌치를 생성하면 단순히 브렌치 파일 하나를 추가한다
+7. 브렌치를 체크아웃하면 HEAD를 해당 브렌치로 변경하고 브렌치가 참조하는 커밋의 내용으로 스테이지와 워킹트리의 내용을 변경한다.
+
+
+
+리눅스에서 인증 옵션 확인하기 p.309
+
+312~ SSH 키 생성 및 사용하기
+SSH를 이용하면 공개키 / 비밀키 방식을 사용
+
+ssh-keygen SSH key 생성
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDKTb5qikqzhPMZUNMNS/pbdthzhMSdjaXlm+21Wbf4kwnEK181bEUXT8vaVSxVQtvrBAWwhb7PubxyIub6ZQm1Nlgi1U80EX4hKAQ9d1Edu+2YlyPD5gNXIMFu7hrGHRTRN6M0F0nd7cRdBscBKcYUPVH+DgUShhM5U5K17286YlmsJQJxNfSgOTpMBQ6eN8yQnDrH1exJWEc607sF/Llwr+v6vf/zdVhCV6fx3tGzQjg6XNcvVuntXWs/3A0E19hbOkOXZPUAD4QKtPSw2iaRXRwZ30xaVahOoJeoa276rHBrmIuRUwWBAgs6BnTNBkthSoYXV75OWjFBry7m6TtOvsnYEGvdWIMpMvNbgryhfActiRUJnGI7ahNIgiAr1XBFIfbeIEpUhJF5ltZ8B0x7QTtERYGYH3KWX6olSjAgOqBJu5uaxGuWFu/BasS2LbwvTw/QqZ2CgSOMesMLTBDUOuLSe6bwntmsRVIxU9uVRw4L1pi7K8138d+tiUHOT5c= xldgh@DESKTOP-B16NK5I
